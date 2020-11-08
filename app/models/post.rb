@@ -1,3 +1,4 @@
+require 'pry'
 class Post < ActiveRecord::Base
   has_many :post_categories
   has_many :categories, through: :post_categories
@@ -7,15 +8,11 @@ class Post < ActiveRecord::Base
   def categories_attributes=(category_attributes)
     category_attributes.values.each do |category_attribute|
       category = Category.find_or_create_by(category_attribute)
-        self.categories << category 
+        self.categories << category unless category[:name] == ""
     end 
   end 
 
-  def comments_attributes=(comment_attributes)
-    comment_attributes.values.each do |comment_attribute|
-      comment = Comment.find_or_create_by(comment_attribute)
-      self.comments << comment 
-    end 
-  end 
+ 
+ 
 
 end
