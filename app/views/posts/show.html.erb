@@ -1,1 +1,30 @@
+<%= @post.title %>
+<%= @post.content %>
 
+<% @post.categories.each do |category| %>
+    <%= category.name %>
+    <%= "here" %>
+<% end %>
+
+<% a = [] %>
+<% @post.comments.each do |comment| %>
+    <% if !a.include?(comment.user) %>
+        <%= link_to comment.user.username, user_path(comment.user)  %> says: 
+        <% a << comment.user %>
+    <% end %>   
+    <%= comment.content %>
+<% end %>
+
+
+
+<%= form_for @post.comments.build do |f| %>
+    <%= f.hidden_field :post_id, value: @post.id %>
+    <%= f.label "User List" %>
+    <%= f.collection_select(:user_id, User.all, :id, :username, :prompt => "User") %>
+    <%= f.fields_for :user, User.new do |user_attributes| %>
+        <%= user_attributes.text_field :username %>
+    <% end %>
+    <%= f.label "Comment" %>
+    <%= f.text_field :content %>
+    <%= f.submit %>
+<% end %>
