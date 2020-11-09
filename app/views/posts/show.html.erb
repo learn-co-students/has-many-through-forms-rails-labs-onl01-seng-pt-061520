@@ -1,1 +1,47 @@
 
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+
+<h3>Categories:</h3> 
+<ul>
+	<% @post.categories.each do |c| %>
+		<li><%= c.name %></li>
+	<% end %>
+</ul>
+
+
+<h3>Comments:</h3>	
+	<% @post.users.uniq.each do |user| %>
+		<%= link_to user.username, user_path(user) %>
+		<ul>
+			<% user.comments.each do |comment| %>
+				<% if @post.comments.include?(comment) %>
+					  <li><%= "says: #{comment.content}" %></li>
+				<% end %>
+			<% end %>
+		</ul>
+	<% end %>
+
+<fieldset>
+	<legend>Comment Section</legend>
+	<%= form_for(Comment.new) do |f| %>
+		<%= f.hidden_field :post_id, :value => @post.id %>
+		<div>
+			<%= f.label :content, "Comment" %><br>
+			<%= f.text_area :content %>
+		</div>
+
+		<div>
+			<%= f.collection_select :user_id, User.all, :id, :username, include_blank: "New User"%> 
+		</div>
+
+		<div>	
+			<p>If a New User, Create Username below.</p>
+			<%= f.fields_for :user, User.new do |user_builder| %>
+				<%= user_builder.label :username %>
+				<%= user_builder.text_field :username %>
+			<% end %>
+		</div>
+		<%= f.submit %>
+	<% end %>
+</fieldset>
