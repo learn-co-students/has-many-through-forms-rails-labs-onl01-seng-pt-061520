@@ -1,0 +1,6 @@
+<%= f.fields_for :user, Comment.new.users.build do |users_fields| %>
+  <%= users_fields.label "Username" %>
+  <%= users_fields.text_field :username %><br>
+  <%= users_fields.label "Email" %>
+  <%= users_fields.text_field :email %><br>
+<% end %>

@@ -1,1 +1,7 @@
-
+<h1><%= @user.username %></h1>
+<ul>
+  Posts a user has comented on:
+  <% @user.posts.each do |post| %>
+    <%= link_to post.title, post_path(post) %>
+  <% end %>
+</ul>
