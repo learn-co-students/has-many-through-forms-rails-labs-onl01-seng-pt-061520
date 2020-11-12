@@ -1,1 +1,10 @@
+<div class=user-content>
+<%= @user.username %>
 
+<% @user.comments.each do |comment| %>
+<%= comment.content %>
+<% post = comment.post %>
+<%= link_to post.title, post_path(post) %>
+<% end %>
+
+</div>
