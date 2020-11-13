@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   resources :comments
   resources :users
   resources :categories
+
+  post "/posts/:id", to: "comments#create"
 end
