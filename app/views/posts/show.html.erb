@@ -1,33 +1,39 @@
 <h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+<br>
 <h2>Categories</h2>
 <% @post.categories.each do |category| %>
   <li>
-    <%= category.name %>,
+    <%= category.name %>
   </li>
 <% end %>
-
-<p><%= @post.content %></p>
 
 <h3>Comments</h3>
 <% @post.comments.each do |comment| %>
   <p>
-    <%= comment.user.username %> says:
-    <%= comment.content %>
+    <% @user = User.find_by(id: comment.user_id) %>
+    <%= "#{@user.username} says: #{comment.content}" %>
   </p>
 <% end %>
 
 <h3>Users</h3>
-<% @post.users.each.uniq do |user| %>
-  <li><%= user.username %></li>
-<% end %>
+<% @post.users.uniq.each do |user| %>
+  <li><%= link_to user.username, user_path(user) %></li>
+<% end %><br>
 
+<h3>Add a Comment</h3>
 <%= form_for :comment do |f| %>
   <%= f.text_area :content %>
   <%= f.collection_select(:user_id, User.all, :id, :username, {include_blank: 'Select a user'} ) %>
 
-  <%= f.fields_for :comments, User.new.comments.build do |comment_fields| %>
-    <%= f.hidden_field :post_id, value: @post.id %>
-    <%= comment_fields.text_area :content %>
-  <% end %>
+  <label for="">Username</label>
+  <input type="text" name="comment[user_attributes][username]" id= "comment_user_attributes_username" value="">
+
+  <%# f.fields_for :users, Comment.new.users.build do |user_fields| %>
+    <%# f.hidden_field :post_id, value: @post.id %>
+    <%# users_fields.text_field :username %>
+  <%# end %>
+  <%= f.hidden_field :post_id, value: @post.id %>
   <%= f.button("Create Comment") %>
+
 <% end %>
