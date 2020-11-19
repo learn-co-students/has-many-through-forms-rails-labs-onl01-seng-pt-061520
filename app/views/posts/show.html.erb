@@ -1,1 +1,36 @@
+<h1><%= @post.title %></h1>
 
+<p><%= @post.content %></p>
+
+<% @post.categories.each do |category| %>
+	<span><%= category.name %> </span>
+<% end %>
+
+
+<% @comment_users = @post.comments.reverse.map do |comment| %>
+	<p>
+		<%= "#{comment.user.username} says: #{comment.content}" %>
+	</p>
+	<% comment.user # used for @comment_users %>
+<% end %>
+
+<%= form_for @post.comments.build do |comment| %>
+	<%= comment.hidden_field :post_id, value: @post.id %>
+
+	<%= comment.label :user_id, 'User' %>
+	<%= comment.collection_select :user_id, User.all, :id, :username %>
+
+	<%= comment.fields_for :user, User.new do |user| %>
+		<%= user.label :username %>
+		<%= user.text_field :username %>
+	<% end %>
+
+	<%= comment.label :content, 'Enter Your Comment' %>
+	<%= comment.text_area :content %>
+
+	<%= comment.submit %>
+<% end %>
+
+<% @comment_users.uniq.each do |user| %>
+	<%= link_to user.username, user_path(user) %>
+<% end %>

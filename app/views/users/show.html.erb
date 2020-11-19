@@ -1,1 +1,7 @@
+<% @comment_posts = @user.comments.map do |comment| %>
+	<% comment.post %>
+<% end %>
 
+<% @comment_posts.each do |post| %>
+	<%= link_to post.title, post_path(post) %>
+<% end %>
