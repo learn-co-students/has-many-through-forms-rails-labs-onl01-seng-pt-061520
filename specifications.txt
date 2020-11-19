@@ -1,0 +1,7 @@
+1. posts have many categories / categories have many posts
+2. post nested form with smart non dublicate categories
+3. posts have many comments / comments belong to a post
+4. users have many comments / comments belong to a user
+5. on the post show page need comment form with drop down + text box for users
+6. create a users show page that links to all the posts a user has commented on
+7. create a categories show page that links to all the posts associated with a category
